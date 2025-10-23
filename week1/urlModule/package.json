@@ -1,13 +1,31 @@
 {
   "name": "urlmodule",
   "version": "1.0.0",
-  "description": "",
+  "description": "My personal notes and code snippets i used when learning the url module and WHATWG URL global class in Node.js",
+  "keywords": [
+    "url",
+    "WHATWG",
+    "middleware",
+    "query",
+    "params",
+    "url",
+    "parts......",
+    "etc"
+  ],
+  "homepage": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney#readme",
+  "bugs": {
+    "url": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raji-mahmud-a/BackendDevelopmentJourney.git"
+  },
+  "license": "MIT",
+  "author": "Raji Mahmud <raji.mahmud.a@gmail.com>",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module"
+    "start": "node index.js",
+    "challenge": "node challenge.js"
+  }
 }
