@@ -1,5 +1,5 @@
 # Working with URLS in Node.js 
-Basically there are 2 ways provided by Node.js tor handling, modifying and formatting URLS, which are:
+Basically there are 2 ways provided by Node.js for handling, modifying and formatting URLS, which are:
 
   - The ` WHATWG ` specification Global URL class (RECOMMENDED).
   - The old legacy ` node:url ` import which is deprecated and not advised.
@@ -140,4 +140,4 @@ URL {
 
 - [Send Me An Email](raji.mahmud.a@gmail.com) 
 
-- [Contact me on X](https://x.com/_Raji_Mahmud_) 
+- [Contact me on X](mailto:https://x.com/_Raji_Mahmud_) 
