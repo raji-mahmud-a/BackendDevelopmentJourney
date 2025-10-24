@@ -1,0 +1,26 @@
+{
+  "name": "bare-http-router",
+  "version": "1.0.0",
+  "description": "A bare not special http router that basically logs timestamp and path requested on connection",
+  "keywords": [
+    "http",
+    "express",
+    "server",
+    "router"
+  ],
+  "homepage": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney#readme",
+  "bugs": {
+    "url": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raji-mahmud-a/BackendDevelopmentJourney.git"
+  },
+  "license": "MIT",
+  "author": "Raji Mahmud <mailto:raji.mahmud.a@gmail.com>",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  }
+}
