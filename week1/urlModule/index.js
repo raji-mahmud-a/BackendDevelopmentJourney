@@ -1,36 +1,49 @@
-const urlString = 'https://api.mentor.io/lessons?topic=url&level=deep&tag=node&tag=web';
-const myUrl = new URL(urlString);
+import {pathToFileURL, fileURLToPath} from "node:url"
 
-// 1. Get the searchParams object
-const params = myUrl.searchParams;
+const urlString = 'https://auth:pass@api.mentor.io:1234/lessons/path?topic=url&level=deep&tag=node&tag=web#section1';
+const url1 = new URL(urlString);
+const log =(message)=>{
+	console.log(message)
+}
 
-console.log(`--- Query Manipulation ---`);
+log("《======= URL Parts =======》")
+log(url1.href)
+log(url1.protocol)
+log(url1.username)
+log(url1.password)
+log(url1.host)
+log(url1.hostname)
+log(url1.port)
+log(url1.pathname)
+log(url1.search)
+log(url1.hash)
+log(url1.origin)
+log(url1.searchParams)
 
-// A. Reading Values (Getters)
-console.log(`The 'topic': ${params.get('topic')}`);     // url (gets the first occurrence)
-console.log(`All 'tag' values: ${params.getAll('tag')}`);// [ 'node', 'web' ]
 
-// B. Mutating Values (Setters)
-// Replace the 'level' parameter
-params.set('level', 'master');
+log("《======= Full URL Object =======》")
+log(url1)
 
-// Add a new 'sort' parameter
-params.append('sort', 'asc');
+log("《======= URL Query Parameters Interface =======》")
 
-// Delete the 'topic' parameter
-params.delete('topic');
+const params = url1.searchParams
 
-// 2. See the results (The URL object automatically updates)
-console.log(`\n--- Resulting URL Object ---`);
-console.log(`New Raw Search: ${myUrl.search}`); 
-// Output: ?level=master&tag=node&tag=web&sort=asc
+log(params)
+log(params.get("topic"))
+log(params.getAll("tag"))
+log(params.set("topic", "Advance URL learning"))
+log(params.get("topic"))
+log(params.append("student", "studentA"))
+log(params.has("level"))
+log(params.delete("level"))
+log(params.has("level"))
+log(params)
 
-console.log(`New Full Href: ${myUrl.href}`);
-// Output: https://api.mentor.io/lessons?level=master&tag=node&tag=web&sort=asc
-// Manually setting this would break the URL: ?filter=A&B
-params.set('filter', 'Item A & Item B');
+log("《======= URL Construction =======》")
+log(new URL("/mah/mud/raji", "https://www.mahmud.com"))
 
-console.log(`Encoded Search: ${myUrl.search}`);
-// Output: ?level=master&tag=node&tag=web&sort=asc&filter=Item+A+%26+Item+B
-// The `URLSearchParams` automatically encoded the '&' into '%26' and the space into '+', 
-// ensuring the query remains valid.
+log("《======= URL File Path Utility =======》")
+const filePath = "/ra/ji/mah/mud"
+const URLLink = pathToFileURL(filePath)
+log(pathToFileURL(filePath))
+log(fileURLToPath(URLLink))
