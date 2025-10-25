@@ -7,8 +7,18 @@ const yellow = '\x1b[33m';
 const reset = '\x1b[0m';
 
 const server = http.createServer((req, res) => {
-	const clientIp = req.socket.remoteAddress;
+	// Manual extraction (pseudo-code)
+let userIP = req.headers['x-forwarded-for'];
 
+if (userIP) {
+    // Take the first IP if it's a comma-separated list
+    userIP = userIP.split(',')[0].trim();
+} else {
+    // Fallback to the direct connection address
+    userIP = req.connection.remoteAddress;
+}
+
+	const clientIp = userIP
 	console.log( green + `\nNew Connection ==》` + reset)
 	console.log( red + `	From: ${clientIp}` +reset)
 	console.log( yellow + `	To: ${req.url}` + reset)
