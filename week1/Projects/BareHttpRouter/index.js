@@ -13,6 +13,7 @@ const server = http.createServer((req, res) => {
 	console.log( red + `	From: ${clientIp}` +reset)
 	console.log( yellow + `	To: ${req.url}` + reset)
 	console.log( yellow + 	`	Timestamp: ${(new Date()).toISOString()}`  +reset)
+	res.end(`<h1 style="margin:2rem auto;">I Got your ip Address: ${clientIp}<h1/> \n <h2>hahaha<h2/>`)
 })
 
 server.listen(PORT, ()=>{ console.log(green +  `Server Active, Up and running on port: ${PORT} \n Timestamp: ${(new Date()).toISOString()}` + reset) })
