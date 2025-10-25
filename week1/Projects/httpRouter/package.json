@@ -1,0 +1,24 @@
+{
+  "name": "httprouter",
+  "version": "1.0.0",
+  "description": "a bare http router used for practice http routing and is not ready for prod yet strictly practice purposes",
+  "keywords": [
+    "http",
+    "router"
+  ],
+  "homepage": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney#readme",
+  "bugs": {
+    "url": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raji-mahmud-a/BackendDevelopmentJourney.git"
+  },
+  "license": "MIT",
+  "author": "Raji Mahmud",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  }
+}
