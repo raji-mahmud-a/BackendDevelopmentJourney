@@ -3,11 +3,14 @@ const PORT = 20941
 const TIMEOUT = 30 * 60 * 1000
 const users = ["Raji Mahmud", "Great Gay!!!"]
 const server = http.createServer((req, res)=>{
+try{
   const path = req.url
   
   if (path === "/users" && req.method === 'GET') {
     let endpoint = "users"
-    res["content-type"] = 'text/html'
+    res.writeHead(200, {
+    	"content-type" : "text/html"
+    })
     res.write(`
 <!DOCTYPE html>
 <html>
@@ -69,7 +72,7 @@ const server = http.createServer((req, res)=>{
     req.on('end', ()=>{
     userN = JSON.parse(userN)
     users.push(userN["name"])
-    res.status = 200
+    res.writeHead(201,{"content-type":"application/json"} )
     res.end(JSON.stringify({
     	status: "cool",
     	message: "idk what to write btw"
@@ -77,7 +80,7 @@ const server = http.createServer((req, res)=>{
     })
   } else if (path === "/user" && req.method === 'GET') {
   let endpoint = path.user
-  res["content-type"] = 'text/html'
+  res.writeHead(200, {"content-type": "text/html"})
   res.write(`
     <!DOCTYPE html>
 <html>
@@ -191,7 +194,7 @@ const server = http.createServer((req, res)=>{
   res.end()
 } else {
    let endpoint = path
-    res["content-type"] = 'text/html'
+    res.writeHead(404, {"content-type": "text/html"})
     res.write(`
 <!DOCTYPE html>
 <html>
@@ -232,6 +235,11 @@ const server = http.createServer((req, res)=>{
 </html>
 `)
 res.end()
+  }
+  }catch(e){
+  	console.log("**** An Internal Server Error Occurred ***", e)
+  	res.writeHead(500, {"content-type": "text/plain"})
+	res.end(`An internal Server Error Occurred: ${e.message}`)
   }
   
 })
