@@ -5,7 +5,7 @@ http.createServer((req, res) => {
 //  console.log(req)
 
   let url = new URL(req.url, "http://localDevEnv")
-  console.log(url.searchParams)
+  console.log(req.socket.remoteAddress)
   res.end('Done')
   //console.log(res)
 }).listen(3000)
