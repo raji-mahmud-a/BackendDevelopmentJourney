@@ -6,7 +6,7 @@ const TIMEOUT = 30 * 60 * 1000
 const users = [
   {
     id: 0,
-    "unique-trait": "He is gay.....",
+    "unique-trait": "He is a nice guy...I think...",
     name: "Ezenna Great",
     username: "greatm3",
     age: 18,
