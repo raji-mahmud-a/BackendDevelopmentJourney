@@ -4,7 +4,7 @@ const url = require('url');
 const server = http.createServer((req, res) => {
   // Parse the URL
   const parsedUrl = url.parse(req.url, true);
-
+	console.log(req)
   // Get different parts of the URL
   const pathname = parsedUrl.pathname; // The path without query string
   const query = parsedUrl.query; // The query string as an object

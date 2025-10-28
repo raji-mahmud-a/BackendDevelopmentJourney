@@ -1,245 +1,181 @@
 import http from "node:http"
+import { match } from "path-to-regexp"
+
 const PORT = 20941
 const TIMEOUT = 30 * 60 * 1000
-const users = ["Raji Mahmud", "Great Gay!!!"]
-const server = http.createServer((req, res)=>{
-try{
-  const path = req.url
-  
-  if (path === "/users" && req.method === 'GET') {
-    let endpoint = "users"
-    res.writeHead(200, {
-    	"content-type" : "text/html"
-    })
-    res.write(`
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>All ${endpoint}</title>
-  <style>
-    body{
-      padding: 0.8rem;
-      background: #00042D;
-      color: #AFEDFF;
-      text-align: center;
-      min-height: calc(100vh - 2rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    
-    li{
-      text-align: start;
-    }
-    a{color:#fff;}
-    div{
-      margin: 3rem;
-    }
-  </style>
-</head>
-
-<body>
-  <div>
-    <h1>All ${endpoint}</h1>
-  <p>All ${endpoint} are listed below</p>
-  </div>
-  
-  <div>
-    `)
-    
-    for (let i =0; i< users.length; i++) {
-        res.write(`<li>${users[i]}</li>`)
-    }
-    
-    res.end(`
-  </div>
-  
-  
-  <p>Visit the <a href="/user">/upload</a> page to add new user</p>
-</body>
-
-</html>
-`)
-  } else if (path === "/user/add" && req.method === 'POST') {
-    let userN = ''
-    req.on('data', (chunk)=>{
-    	userN += chunk
-    })
-
-    req.on('end', ()=>{
-    userN = JSON.parse(userN)
-    users.push(userN["name"])
-    res.writeHead(201,{"content-type":"application/json"} )
-    res.end(JSON.stringify({
-    	status: "cool",
-    	message: "idk what to write btw"
-    }))
-    })
-  } else if (path === "/user" && req.method === 'GET') {
-  let endpoint = path.user
-  res.writeHead(200, {"content-type": "text/html"})
-  res.write(`
-    <!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
-  <style>
-    body{
-      padding: 0.8rem;
-      background: #00042D;
-      color: #AFEDFF;
-      text-align: center;
-      min-height: calc(100vh - 2rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    a{color: #FFB1B1;}
-    li{
-      text-align: start;
-    }
-    
-    div{
-      margin: 3rem;
-    }
-    form{
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      text-align: left;
-    }
-    button{
-      padding: 0.6rem;
-      background: #AFEDFF;
-      outline: none;
-      border: none;
-      width:100%;
-      border-radius: 0.4rem;
-      font-size: 1rem;
-    }
-    
-    input{
-      padding: 0.6rem;
-      background: #EEFBFF;
-      outline: none;
-      border: none;
-      width:100%;
-      border-radius: 0.4rem;
-      font-size: 1rem;
-    }
-  </style>
-
-</head>
-
-<body>
-  <div>
-    <h1>All Users</h1>
-  <p>All users are listed below</p>
-  </div>
-  
-  <div>
-    <form id="foRm">
-      <label for="Name">Name</label>
-      <input type="text" name="Name" id="Name" placeholder="Enter your name here"/>
-      <button> Submit</button>
-    </form>
-  </div>
-  
-  
-  <p>Visit the <a href="/upload">/upload</a> page to add new user</p>
-  
-    <script>
-    const formEl = document.getElementById("foRm")
-    formEl.addEventListener('submit', (e)=>{
-      e.preventDefault()
-      handleSubmit(document.getElementById("Name").value)
-    })
-    function handleSubmit(value){
-      fetch('/user/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: value
-        })
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(\`HTTP error! status:\`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Success:', data);
-          window.location.pathname = '/users';
-        })
-        .catch(error => {
-          console.error('Error posting data:', error);
-          alert('An error occurred')
-        });
-
-    }
-  </script>
-</body>
-
-</html>
-  `)
-  res.end()
-} else {
-   let endpoint = path
-    res.writeHead(404, {"content-type": "text/html"})
-    res.write(`
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>All ${endpoint}</title>
-  <style>
-    body{
-      padding: 0.8rem;
-      background: #00042D;
-      color: #AFEDFF;
-      text-align: center;
-      min-height: calc(100vh - 2rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    a{color:#fff;}
-    li{
-      text-align: start;
-    }
-    
-    div{
-      margin: 3rem;
-    }
-  </style>
-</head>
-
-<body>
-  <div>
-    <h1>FUCK YOU!!! <pre>${path}</pre> doesn't exist</h1>
-    <p>Go somewhere else e.g <a href="/users">/users</a></p>
-  </div>
-</body>
-
-</html>
-`)
-res.end()
+const users = [
+  {
+    id: 0,
+    "unique-trait": "He is gay.....",
+    name: "Ezenna Great",
+    username: "greatm3",
+    age: 18,
+    details: "idk what to say. let me just add an unnecessarily long lorem text of 100 characters::: ==> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    uniqueID: Date.now()
+  },{
+    id: 1,
+    "unique-trait": "He is very cool....",
+    name: "Raji Mahmud",
+    username: "_Raji_Mahmud_",
+    age: 16,
+    details: "idk what to say. let me just add an unnecessarily long lorem text of 100 characters::: ==> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    uniqueID: Date.now()
   }
-  }catch(e){
+]
+
+const server = http.createServer((req, res)=>{
+  
+try{
+  const url = new URL(req.url, 'http://urlendpoint/')
+  const path = url.pathname
+  const params = url.searchParams
+  const method = req.method
+  const userEndpoint = match("/users/:id")(path)
+  if (path === "/users") {
+    if (method === 'GET') {
+      if (params.get("age")) {
+      if (!isNaN(Number(params.get("age"))) && params.get("age") !== '') {
+        res.writeHead(200, {"content-type": "application/json"})
+	      res.end(JSON.stringify({
+	        success: true,
+	        message: "User Data gotten successfully",
+	        data: users.filter((val, idx)=> val.age === Number(params.get('age')))}
+    	  , null, 2))
+      }else{
+        res.writeHead(400, {"content-type": "application/json"})
+	      res.end(JSON.stringify({
+	        success: false,
+    	    message: 'Bad request',
+    	    details: "The parameter (age) is meant to be a number"
+    	  }, null, 2))
+      }
+    } else {
+      res.writeHead(200, {"content-type": "application/json"})
+	    res.end(JSON.stringify({
+	      success: true,
+	      message: 'Data gotten successfully',
+	      data: users
+	    }, null, 2))
+    }
+    }else if (method === 'POST') {
+      let body =''
+      req.on('data', (chunk)=>{body += chunk.toString()})
+      req.on('end', ()=> {
+        try {
+          if (!body) {
+            res.writeHead(400, {"content-type": "application/json"})
+    	      return res.end(JSON.stringify({
+    	        success: false,
+        	    message: 'Bad Request',
+        	    details: 'No data sent in request body'
+        	  }, null, 2))
+          }
+          const data = JSON.parse(body)
+          if (!data["unique-trait"] || !data.name || !data.username || !data.age || !data.details) {
+            res.writeHead(400, {"content-type": "application/json"})
+    	      return res.end(JSON.stringify({
+    	        success: false,
+        	    message: 'Bad Request',
+        	    details: 'Missing required fields'
+        	  }, null, 2))
+          }
+          
+          data.id = users.length
+          data.uniqueID = Date.now()
+          
+          users.push(data)
+          res.writeHead(201, {"content-type": "application/json"})
+  	      res.end(JSON.stringify({
+  	        success: true,
+  	        message: 'user created successfully',
+  	        data: data
+  	      }, null, 2)) 
+        } catch (e) {
+          res.writeHead(400, {"content-type": "application/json"})
+          res.end(JSON.stringify({
+            success: false,
+            message: 'Invalid JSON',
+            details: 'The request body is not valid JSON format.'
+          }, null, 2))
+        }
+      })
+    }
+  } else if (userEndpoint && userEndpoint.path.startsWith("/users/")) {
+    if (method === 'DELETE') {
+      const indexToDelete = users.findIndex(item => item.id === Number(userEndpoint.params.id));
+      if (indexToDelete !== -1) {
+        users.splice(indexToDelete, 1);
+        res.writeHead(200, { "content-type": "application/json" })
+        res.end(JSON.stringify({
+          success: true,
+          message: "The resource was deleted successfully",
+          data: null
+        }, null, 2))
+      } else {
+        res.writeHead(404, { "content-type": "application/json" })
+        return res.end(JSON.stringify({
+          success: false,
+          message: 'Resource not Found',
+          details: "The resource with the specified id could not be found"
+        }, null, 2))
+      }
+    }else if (method === 'PATCH') {
+      let body = ''
+      req.on('data', (chunk) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          if (!body) {
+            res.writeHead(400, { "content-type": "application/json" })
+            return res.end(JSON.stringify({
+              success: false,
+              message: 'Bad Request',
+              details: 'No data sent in request body'
+            }, null, 2))
+          } else if (users[Number(userEndpoint.params.id)] === undefined) {
+            res.writeHead(404, { "content-type": "application/json" })
+            return res.end(JSON.stringify({
+              success: false,
+              message: 'Not Found',
+              details: "The resource you're looking for cannot be found"
+            }, null, 2))
+          }
+          const data = JSON.parse(body)
+          for (let key in data) {
+            users[Number(userEndpoint.params.id)][key] = data[key]
+          }
+          
+          res.writeHead(204, { "content-type": "application/json" })
+          res.end(JSON.stringify({
+            success: true,
+            message: 'user updated successfully',
+            data: users[Number(userEndpoint.params.id)]
+          }, null, 2))
+        } catch (e) { 
+          res.writeHead(400, {"content-type": "application/json"})
+          res.end(JSON.stringify({
+            success: false,
+            message: 'Invalid JSON',
+            details: 'The request body is not valid JSON format.'
+          }, null, 2))
+        }
+      })
+    }
+  } else {
+  res.writeHead(404, { "content-type": "application/json" })
+  res.end(JSON.stringify({
+    success: false,
+    message: 'Not Found',
+    details: "The resource you're looking for cannot be found"
+  }, null, 2))
+}
+}catch(e){
   	console.log("**** An Internal Server Error Occurred ***", e)
-  	res.writeHead(500, {"content-type": "text/plain"})
-	res.end(`An internal Server Error Occurred: ${e.message}`)
+  	res.writeHead(500, {"content-type": "application/json"})
+  	res.end(JSON.stringify({
+  	  success: false,
+  	  message: 'An internal Server Error Occurred',
+  	  details: 'Please Try again Later or contact the developer'
+  	}))
   }
   
 })
@@ -249,3 +185,4 @@ server.setTimeout(TIMEOUT, ()=> {
 server.listen(PORT, ()=>{
   console.log(`Server Started on port ${PORT}`)
 })
+
