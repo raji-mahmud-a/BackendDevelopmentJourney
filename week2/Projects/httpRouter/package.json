@@ -1,0 +1,29 @@
+{
+  "name": "httprouter",
+  "version": "2.0.0",
+  "description": "a basic http router i made before and it now persist data to a json file",
+  "keywords": [
+    "http-router",
+    "no-express",
+    "router",
+    "express"
+  ],
+  "homepage": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney#readme",
+  "bugs": {
+    "url": "https://github.com/raji-mahmud-a/BackendDevelopmentJourney/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raji-mahmud-a/BackendDevelopmentJourney.git"
+  },
+  "license": "MIT",
+  "author": "Raji Mahmud",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "dependencies": {
+    "path-to-regexp": "^8.3.0"
+  }
+}
