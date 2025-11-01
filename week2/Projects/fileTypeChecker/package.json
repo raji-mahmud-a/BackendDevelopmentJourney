@@ -1,0 +1,16 @@
+{
+  "name": "filetypechecker",
+  "version": "1.0.0",
+  "description": "a file type checker that infers the file type from the header signature of the buffered data",
+  "keywords": [
+    "file-type",
+    "buffers"
+  ],
+  "license": "MIT",
+  "author": "Raji Mahmud",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  }
+}
