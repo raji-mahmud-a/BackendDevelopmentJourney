@@ -1,7 +1,7 @@
 const fs = require("node:fs")
 const os = require('os');
 
-const readderr = fs.createReadStream(`${os.homedir()}/app.log`)
+const readderr = fs.createReadStream(`/app.log`)
 let data = ""
 let count = 0
 readderr.setEncoding("utf8")
