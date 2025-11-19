@@ -64,19 +64,19 @@ const editor = new TextEditor();
 const history = new EditorHistory();
 
 history.execute(new WriteCommand(editor, "Hello"));
-console.log(editor.getContent()); // "Hello"
+console.log(editor.getContent());
 
 history.execute(new WriteCommand(editor, " World"));
-console.log(editor.getContent()); // "Hello World"
+console.log(editor.getContent());
 
 history.execute(new DeleteCommand(editor, 6));
-console.log(editor.getContent()); // "Hello"
+console.log(editor.getContent());
 
-history.undo(); // Undo delete
-console.log(editor.getContent()); // "Hello World"
+history.undo();
+console.log(editor.getContent());
 
-history.undo(); // Undo write
-console.log(editor.getContent()); // "Hello"
+history.undo();
+console.log(editor.getContent());
 
-history.undo(); // Undo write
-console.log(editor.getContent()); // ""	
+history.undo(); 
+console.log(editor.getContent());
