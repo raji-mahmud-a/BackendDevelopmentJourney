@@ -29,21 +29,20 @@ class WriteCommand{
  undo(){this.editor.delete(this.text.length)}
 }
 
-const deleted=[]
 
 class DeleteCommand{
  constructor(editor, numChars){
   this.editor = editor
   this.numChars = numChars
-  this.text
+  this.text=""
  }
 
  execute(){
-  this.text= deleted.push(this.editor.getContent().split("").slice(this.editor.getContent().length -this.numChars, this.numChars).join(""))
+  this.text= this.editor.getContent().slice(this.editor.getContent().length -this.numChars)
   this.editor.delete(this.numChars)
  }
 
- undo(){this.editor.write(deleted.pop())}
+ undo(){this.editor.write(this.text)}
 }
 
 class EditorHistory{
