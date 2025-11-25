@@ -5,8 +5,8 @@ loadEnvFile()
 const PORT = process.env.PORT
 const s = express()
 
-
-s.use("/posts", postRoutes)
+s.use(express.json())
+s.use("/api/posts", postRoutes)
 
 s.listen(PORT, ()=>{
   console.log('server up and active on port: ', PORT)
