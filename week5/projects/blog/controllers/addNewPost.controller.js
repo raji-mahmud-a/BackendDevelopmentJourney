@@ -1,23 +1,16 @@
-import slugify from "slugify"
+import createSlug from "../utils/createSlug.util.js"
 import writePosts from '../utils/write.posts.js'
 import readPosts from '../utils/read.posts.js'
-let currentID = 0
+let currentID = 1
 
 const addNewPost = async(req, res)=>{
  const allPosts = await readPosts()
  const data = req.body
- data.id = currentID++
+ data.id = currentID
+ currentID ++
  const date = new Date()
- const slug = slugify(data.title, {
-  replacement: '-',
-  remove: /[*+~.()""''!:@]/g,
-  lower: true,
-  strict: true,
-  locale: 'en',
-  trim: true
- });
+ const slug = createSlug(data.title)
  const checkSlug = allPosts.filter((val)=>val.slug.startsWith(slug))
- console.log(checkSlug.length)
  data.slug = (checkSlug.length > 0) ? (slug + '-' + (checkSlug.length)) : slug
  data.excerpt = (data.excerpt) ? data.excerpt : data.content.substring(0, 200) + '...'
  data.status = (data.status === 'published') ? data.status : 'draft'
@@ -32,7 +25,7 @@ const addNewPost = async(req, res)=>{
   "success": true,
   "message": "Post created successfully",
   "data" : {
-  	"post": data
+   "post": data
   }
  })
 }

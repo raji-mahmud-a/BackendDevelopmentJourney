@@ -20,7 +20,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run crean && node index.js",
+    "start": "npm run clean && node index.js",
     "clean": "echo '[]' > db/posts.json && echo '[]' > db/comments.json",
     "dev": "nodemon index.js"
   },

@@ -3,13 +3,14 @@ import getAllPosts from '../controllers/getAllPosts.controller.js';
 import getPostByID from '../controllers/getPostByID.controller.js';
 import deletePostByID from '../controllers/deletePostByID.controller.js';
 import validateID from '../middlewares/validateID.middleware.js';
+import validateBody from '../middlewares/validateBody.middleware.js';
 import addNewPost from '../controllers/addNewPost.controller.js';
 
 const postRoutes = Router()
 postRoutes.get('/', getAllPosts)
 postRoutes.get('/:id', validateID, getPostByID)
 postRoutes.delete('/:id', validateID, deletePostByID)
-postRoutes.post('/', addNewPost)
+postRoutes.post('/', validateBody, addNewPost)
 
 
 export default postRoutes
