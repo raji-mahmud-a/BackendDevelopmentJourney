@@ -9,7 +9,6 @@ const validateBody = async(req, res, next)=>{
  if(req.body.content.length < 50)return res.status(422).json({"success": false,"error": "Content must be at least 50 characters"})
  if(slug && data.find((val)=>val.slug === slug))return res.status(409).json({success: false, error: "A post with similar title already exists"})
  if(!req.body.status || req.body.status !== 'published')req.body.status = 'draft'
-
  next()
 }
 

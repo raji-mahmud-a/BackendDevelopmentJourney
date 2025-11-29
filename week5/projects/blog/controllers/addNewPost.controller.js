@@ -1,6 +1,8 @@
 import createSlug from "../utils/createSlug.util.js"
 import writePosts from '../utils/write.posts.js'
 import readPosts from '../utils/read.posts.js'
+//import { loadEnvFile } from 'node:process';
+//loadEnvFile()
 let currentID = 1
 
 const addNewPost = async(req, res)=>{
@@ -8,6 +10,8 @@ const addNewPost = async(req, res)=>{
  const data = req.body
  data.id = currentID
  currentID ++
+ const file = req.file
+ data.upload = `${process.env.LIVE_URL}/static/uploads/${file.filename}`
  const date = new Date()
  const slug = createSlug(data.title)
  const checkSlug = allPosts.filter((val)=>val.slug.startsWith(slug))

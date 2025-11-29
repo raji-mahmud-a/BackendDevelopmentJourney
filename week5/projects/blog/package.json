@@ -21,11 +21,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run clean && node index.js",
-    "clean": "echo '[]' > db/posts.json && echo '[]' > db/comments.json",
+    "clean": "echo '[]' > db/posts.json && echo '[]' > db/comments.json && rm -rf static/uploads/*",
     "dev": "nodemon index.js"
   },
   "dependencies": {
     "express": "^5.1.0",
+    "multer": "^2.0.2",
     "slugify": "^1.6.6"
   }
 }
