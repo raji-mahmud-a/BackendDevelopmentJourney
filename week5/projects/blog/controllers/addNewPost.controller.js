@@ -11,6 +11,7 @@ const addNewPost = async(req, res)=>{
  data.id = currentID
  currentID ++
  const file = req.file
+ console.log(file)
  data.upload = `${process.env.LIVE_URL}/static/uploads/${file.filename}`
  const date = new Date()
  const slug = createSlug(data.title)
