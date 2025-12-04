@@ -1,10 +1,11 @@
-import readPosts from '../utils/read.posts.js';
+import db from "../db/database.config.js"
 
 const getAllPosts = (req, res)=>{
- const data = readPosts()
+ const posts = db.getAllPosts()
+
  res.status(200).json({
   success: true,
-  data: data,
+  data: posts,
   error: null
  })
 }

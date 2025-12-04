@@ -1,37 +1,19 @@
 import createSlug from "../utils/createSlug.util.js"
-import writePosts from '../utils/write.posts.js'
-import readPosts from '../utils/read.posts.js'
-//import { loadEnvFile } from 'node:process';
-//loadEnvFile()
-let currentID = 1
+import db from "../db/database.config.js"
 
 const addNewPost = async(req, res)=>{
- const allPosts = await readPosts()
- const data = req.body
- data.id = currentID
- currentID ++
- const file = req.file
- console.log(file)
- data.upload = `${process.env.LIVE_URL}/static/uploads/${file.filename}`
- const date = new Date()
- const slug = createSlug(data.title)
- const checkSlug = allPosts.filter((val)=>val.slug.startsWith(slug))
- data.slug = (checkSlug.length > 0) ? (slug + '-' + (checkSlug.length)) : slug
- data.excerpt = (data.excerpt) ? data.excerpt : data.content.substring(0, 200) + '...'
- data.status = (data.status === 'published') ? data.status : 'draft'
- data.view_count = 0
- data.created_at = date.toISOString()
- data.updated_at = date.toISOString()
+ const { title, content, excerpt, status } = req.body
+ const FeaturedImage = `${process.env.LIVE_URL}/static/uploads/${file.filename}`
+ const Slug = createSlug(data.title)
+ const Excerpt = (excerpt) ? excerpt : content.substring(0, 200) + '...'
+ const Status = (status === 'published') ? status : 'draft'
 
- allPosts.push(data)
- writePosts(allPosts)
+ db.addNewPost(title, content, FeaturedImage, Slug, Excerpt, Status)
 
  res.status(201).json({
   "success": true,
   "message": "Post created successfully",
-  "data" : {
-   "post": data
-  }
+  "data": null
  })
 }
 
